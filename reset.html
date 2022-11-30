@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+
+      
+        function check(){
+            let u=$("#user").val()
+            let link="http://localhost:8080/api/guser/"+u;
+     if($("#new").val()!=$("#confirm").val()){
+        alert("confirm and new password should be same")
+     }
+     else{
+          $.ajax({
+            url:link,
+            success:function(data){
+                if(data.email==$("#user").val()){
+
+        $.ajax({
+            url: "http://localhost:8080/api/puser",
+            method: "PUT",
+            data: JSON.stringify({email: $("#user").val(),password: $("#new").val()}),
+            contentType: "application/json",
+            success: function()
+            {
+                alert("password updated successfully")
+              
+            }
+           })
+
+        }
+        else{
+            alert("no user with that mail")
+        }
+    
+    }})
+    }
+
+
+     }
+            
+
+        
+    </script>
+</head>
+<body>
+    
+        <label>USER NAME:</label><br>
+        <input type="text" id="user" name="user" ><br>
+        <label >NEW PASSOWRD:</label><br>
+        <input type="text" id="new" name="new"><br><br>
+        <label >CONFIRM PASSWORD:</label><br>
+        <input type="text" id="confirm" name="confirm"><br><br>
+        <button type="button" id="button1" onclick="check()">submit</body>
+</body>
+</html>

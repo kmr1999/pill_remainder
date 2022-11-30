@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+         function populateTable(object)
+        {          
+           
+
+            var tablebody='<table border="5">';
+            var column="Column";
+           
+           
+            tablebody+='<tr>';
+            for(var headers in object[0])
+            {
+                tablebody+='<th>';
+                tablebody+=headers
+                tablebody+='</th>';
+            }
+
+         
+            tablebody+='</tr>';
+            for (var index in object) 
+            {
+                tablebody+='<tr>';
+                var row = object[index];
+                for (var eachCell in row)
+                {
+                    tablebody+='<td>';
+                    tablebody+=row[eachCell]; 
+                    tablebody+='</td>'
+                }
+                tablebody+='</tr>';
+            }         
+            tablebody+='</table>';
+            $("body").append(tablebody);
+       
+    }
+    $(document).ready(function(){
+
+        let u=window.localStorage.getItem("user")
+let link="http://localhost:8080/api/ghistory/"+u;
+        $.ajax({
+    url: link,
+   success: function(object){
+    $("body").append('<h1>SELF</h1>');
+                let o=object.self
+                if(o!=null)
+                populateTable(o);
+                let u='<br>'
+                $("body").append('<h1>MOTHER</h1>');
+                
+                o=object.mom
+                if(o!=null)
+                populateTable(o);
+               
+                $("body").append('<h1>FATHER</h1>');
+                 o=object.dad
+                 if(o!=null)
+                populateTable(o);
+                
+                
+}});
+
+        
+        $("#p1").text("welcome "+u)
+
+        $("#button1").click(function(){
+           
+            window.location.assign("http://127.0.0.1:5500/myprofile.html")
+  }
+  );
+  $("#button2").click(function(){
+            window.location.assign("http://127.0.0.1:5500/medical_history.html")
+
+  });
+  $("#button3").click(function(){
+    window.localStorage.setItem("user",null)
+            window.location.assign("http://127.0.0.1:5500/login.html")
+
+  });
+  $("#button4").click(function(){
+            window.location.assign("http://127.0.0.1:5500/medical_history.html")
+
+  });
+ 
+
+});
+
+</script>
+</head>
+<body>
+    <h1>HOME</h1>
+    <p id="p1"></p>
+    <button type="button" id="button1">my_profile</button>
+    <button type="button" id="button2"> UPDATE MEDICAL HISTORY</button>
+    <button type="button" id="button3">LOGOUT </button>
+</body>
+</html>

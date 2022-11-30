@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+          border:1px solid black;
+        }
+        </style>
+    <script src="jquery-3.6.0.js"></script>
+    <script>
+        function dependent(){
+            let u=window.localStorage.getItem("user")
+            let url="http://localhost:8080/api/ghistory/"+u+"/"+$("#dependent").val()
+           $.ajax({
+            url: url,
+            method: "GET",
+            success: function(object){
+
+                let tableHeaderRowCount = 1;
+let table = document.getElementById('table');
+let rowCount = table.rows.length;
+for (let i = tableHeaderRowCount; i < rowCount; i++) {
+    table.deleteRow(tableHeaderRowCount);
+}
+if(object!=null)
+for(let i=0;i<object.length;i++){
+    let row = table.insertRow(-1);
+    var obj=object[i]
+    console.log(object.length)
+    var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  var cell4 = row.insertCell(3);
+  var cell5 = row.insertCell(4);
+  var cell6 = row.insertCell(5);
+  var cell7 = row.insertCell(6);
+  var cell8 = row.insertCell(7);
+  var cell9 = row.insertCell(8);
+  var cell10 = row.insertCell(9);
+cell1.innerHTML=obj.hisid
+cell2.innerHTML=obj.did
+cell3.innerHTML=obj.illness
+cell4.innerHTML=obj.doctor
+cell5.innerHTML=obj.startdate
+cell6.innerHTML=obj.enddate
+cell7.innerHTML=obj.dosageamount
+cell8.innerHTML=obj.dosetime
+cell9.innerHTML=obj.dosefrequency
+cell10.innerHTML=obj.medicine
+
+
+
+
+}
+
+
+
+                
+            }
+
+
+
+           })
+
+
+        }
+            console.log(window.localStorage.getItem("user"))
+            function update(){
+let u=window.localStorage.getItem("user")
+    let url="http://localhost:8080/api/ahistory/"+u+"/"+$("#dependent").val()
+  console.log(url)
+    $.ajax({
+        url: url,
+            method: "POST",
+            data: JSON.stringify({illness:$("#illness").val(),doctor:$("#doctor").val(),startdate:$("#startdate").val(),enddate:$("#enddate").val(),dosageamount:$("#dosageamount").val(),dosetime:$("#dosetime").val(),dosefrequency:$("#dosefrequency").val(),medicine:$("#medicine").val()}),
+            contentType: "application/json",
+   success: function(object){
+       if(object[0].hisid!=-1){
+    var tableRef = document.getElementById("table");
+    let row = tableRef.insertRow(-1);
+    var obj=object[object.length-1]
+    console.log(object.length)
+    var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  var cell4 = row.insertCell(3);
+  var cell5 = row.insertCell(4);
+  var cell6 = row.insertCell(5);
+  var cell7 = row.insertCell(6);
+  var cell8 = row.insertCell(7);
+  var cell9 = row.insertCell(8);
+  var cell10 = row.insertCell(9);
+cell1.innerHTML=obj.hisid
+cell2.innerHTML=obj.did
+cell3.innerHTML=obj.illness
+cell4.innerHTML=obj.doctor
+cell5.innerHTML=obj.startdate
+cell6.innerHTML=obj.enddate
+cell7.innerHTML=obj.dosageamount
+cell8.innerHTML=obj.dosetime
+cell9.innerHTML=obj.dosefrequency
+cell10.innerHTML=obj.medicine
+       }
+       else{
+alert("add profile to add medicines")
+
+
+       }
+
+
+
+
+  }});
+
+
+            }
+        //$(document).ready(function(){
+// $("#button1").click(function(){
+// var dynamicput='<br>illness:<input type="text" name="illness" id="illness"><br>doctor<input type="text" name="doctor" id="doctor"><br>startdate:<input type="text" name="startdate" id="startdate"><br>enddate:<input type="text" name="enddate" id="enddate"><br>dosageamount:<input type="text" name="dosageamount" id="dosageamount"><br>dosetime:<input type="text" name="dosetime" id="dosetime"><br>dosefrequency:<input type="text" name="dosefrequency" id="dosefrequency"><br>medicine:<input type="text" name="medicine" id="medicine"><br><button id="button2" onclick="update()">ADD</button>'
+
+
+// $("body").append(dynamicput);
+
+
+// });
+
+
+
+        //});
+        function populateTable(object)
+        {          
+           
+
+            var tablebody='<table border="5" id="table">';
+            var column="Column";
+           
+           
+            tablebody+='<tr>';
+            for(var headers in object[0])
+            {
+                tablebody+='<th>';
+                tablebody+=headers
+                tablebody+='</th>';
+            }
+
+         
+            tablebody+='</tr>';
+            for (var index in object) 
+            {
+                tablebody+='<tr>';
+                var row = object[index];
+                for (var eachCell in row)
+                {
+                    tablebody+='<td>';
+                    tablebody+=row[eachCell]; 
+                    tablebody+='</td>'
+                }
+                tablebody+='</tr>';
+            }         
+            tablebody+='</table><br>';
+            $("body").append(tablebody);
+       
+    }
+
+
+
+
+    </script>
+</head>
+<body>
+    <label>view medical_history</label>
+    <select name="dependent" id="dependent" name="dependent" onchange="dependent()">
+        <option value="self" selected >Self</option>
+        <option value="mom">Mother</option>
+        <option value="dad">father</option>
+      </select>
+      <table id="table" style="width:100%">
+        <tr>
+          <th>hisid</th>
+          <th>did</th>
+          <th>illness</th>
+          <th>doctor</th>
+          <th>startdate</th>
+          <th>enddate</th>
+          <th>dosageamount</th>
+          <th>dosetime</th>
+          <th>dosefrequency</th>
+          <th>medicine</th>
+        </tr>
+       
+      </table>
+      <br>illness:<input type="text" name="illness" id="illness"><br>doctor<input type="text" name="doctor" id="doctor"><br>startdate:<input type="text" name="startdate" id="startdate"><br>enddate:<input type="text" name="enddate" id="enddate"><br>dosageamount:<input type="text" name="dosageamount" id="dosageamount"><br>dosetime:<input type="text" name="dosetime" id="dosetime"><br>dosefrequency:<input type="text" name="dosefrequency" id="dosefrequency"><br>medicine:<input type="text" name="medicine" id="medicine"><br><button id="button2" onclick="update()">ADD</button>
+</body>
+</html>

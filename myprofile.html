@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery-3.6.0.js"></script>
+
+    <script>
+    $(document).ready(function(){
+      console.log("abcdef1")
+    $("#button1").click(function(){
+
+
+
+      $.ajax({
+            url: "http://localhost:8080/api/adependent",
+            method: "POST",
+            data: JSON.stringify({pemail:window.localStorage.getItem("user"),email:window.localStorage.getItem("user"),name:$("#u2").val(),contact:$("#u4").val(),bloodgroup:$("#u5").val(),dob:$("#u6").val(),weight:$("#u7").val(),height:$("#u8").val(),relationship:"self"}),
+            contentType: "application/json",
+            success: function()
+            {
+                alert("updated successfully")
+              
+            }
+           })
+
+
+
+    })
+
+
+    $("#button2").click(function(){
+      $.ajax({
+            url: "http://localhost:8080/api/adependent",
+            method: "POST",
+            data: JSON.stringify({pemail:window.localStorage.getItem("user"),email:$("#f3").val(),name:$("#f2").val(),contact:$("#f4").val(),bloodgroup:$("#f5").val(),dob:$("#f6").val(),weight:$("#f7").val(),height:$("#f8").val(),relationship:$("#dependent").val()}),
+            contentType: "application/json",
+            success: function()
+            {
+                alert("updated successfully")
+              
+            }
+           })
+      
+})
+
+      let u=window.localStorage.getItem("user")
+      console.log("user is "+u)
+      let link="http://localhost:8080/api/gdependent/"+u+"/self"
+        $.ajax({
+    url: link,
+   success: function(object){
+    $("#u2").val(object.name)
+$("#u3").val(object.email)
+$("#u4").val(object.contact)
+$("#u5").val(object.bloodgroup)
+$("#u6").val(object.dob)
+$("#u7").val(object.weight)
+$("#u8").val(object.height)
+
+
+    
+  }});
+ 
+
+
+        });
+
+function vdep(){
+  let u=window.localStorage.getItem("user")
+   let d=$("#dependent").val()
+ let link="http://localhost:8080/api/gdependent/"+u+"/"+d;
+    $.ajax({
+    url: link,
+   success: function(result){
+  
+    populateTable(result)
+
+    
+  }});
+  function populateTable(object){
+    console.log(object.relationship)
+ $("#f1").val(object.relationship)
+
+ $("#f2").val(object.name)
+ $("#f3").val(object.email)
+ $("#f4").val(object.contact)
+ $("#f5").val(object.bloodgroup)
+ $("#f6").val(object.dob)
+ $("#f7").val(object.weight)
+ $("#f8").val(object.height)
+
+
+  }
+
+}
+    </script>
+    
+</head>
+<body>
+    <h1>MyProfile</h1>
+    
+   
+      <br>
+      <br>
+<h6>USERS PROFILE</h6>
+      <label>Name</label>
+      <input type="text" id="u2">
+      <br>
+      <label>Contact</label>
+      <input  type="text" id="u4">
+      <br>
+      <label>Blood group</label>
+      <input type="text" id="u5">
+      <br>
+      <label>DOB</label>
+      <input type="text" id="u6">
+      <br>
+      <label>Weight</label>
+      <input type="text" id="u7">
+      <br>
+      <label>Height</label>
+      <input type="text" id="u8"><br>
+      <button type="button" id="button1">UPDATE</button>
+
+
+      
+<h6>DEPENDENT PROFILE</h6>
+
+<select name="dependent" id="dependent">  
+  <option value="mom" selected>Mother</option>
+  <option value="dad">father</option>
+  <option value="bro">Brother</option>
+</select><button onclick="vdep()">VIEW dependent's profile</button>
+    <br>
+    <label>Name</label>
+    <input type="text" id="f2">
+    <br>
+
+    <label>Email</label>
+    <input type="text" id="f3">
+    <br>
+    <label>Contact</label>
+    <input  type="text" id="f4">
+    <br>
+    <label>Blood group</label>
+    <input type="text" id="f5">
+    <br>
+    <label>DOB</label>
+    <input type="text" id="f6">
+    <br>
+    <label>Weight</label>
+    <input type="text" id="f7">
+    <br>
+    <label>Height</label>
+    <input type="text" id="f8"><br>
+    <button type="button" id="button2">UPDATE</button>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery-3.6.0.js"></script>
+<script>
+$(document).ready(function(){
+    $("#button1").click(function(){
+      let u=$("#email").val()
+      let link="http://localhost:8080/api/guser/"+u;
+  $.ajax({
+    url: link,
+   success: function(result){    
+    if(($("#email").val()==result.email) && ($("#password").val()==result.password)){
+        window.localStorage.setItem("user",result.email)
+    window.location.assign("http://127.0.0.1:5500/home.html")
+        }
+    else{
+        $("p").text("id or password is incorrect")
+    }
+  }});
+  });
+  $("#button2").click(function(){
+    
+    window.location.assign("http://127.0.0.1:5500/reset.html")
+       
+
+
+  })
+
+
+  $("#button3").click(function(){
+    
+    window.location.assign("http://127.0.0.1:5500/registration.html")
+       
+
+
+  })
+
+});
+  </script>
+
+
+</head>
+<body>
+    
+        <label for="email">email:</label><br>
+        <input type="text" name="email" id="email"><br>
+        <label for="password">password:</label><br>
+        <input type="text" name="password" id="password"><br><br>
+     <button type="button" id="button1">submit</button><br>
+     <br>
+     <button type="button" id="button2">FORGOT password?</button>   <button type="button" id="button3">NEW USER?</button>
+<p></p>
+    
+</body>
+</html>
